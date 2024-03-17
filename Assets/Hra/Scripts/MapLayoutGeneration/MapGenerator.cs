@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] private Room _room;
-    [SerializeField] private GameObject _hallway;
-
     private AStar _aStar;
     private PrimsAlg _primsAlg;
     private RoomGenerator _roomGenerator;
@@ -25,8 +22,8 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        _roomGenerator.GenerateRooms(DUNGEON_SIZE_X, DUNGEON_SIZE_Y, 50, _aStar, _room);
-        _hallwayGenerator.GenerateHallways(_bowyerWatson.GenerateTriangularMesh(_roomGenerator.PlacedRooms), _roomGenerator.PlacedRooms, _aStar, _primsAlg, _hallway);
+        _roomGenerator.GenerateRooms(DUNGEON_SIZE_X, DUNGEON_SIZE_Y, 50, _aStar);
+        _hallwayGenerator.GenerateHallways(_bowyerWatson.GenerateTriangularMesh(_roomGenerator.PlacedRooms), _roomGenerator.PlacedRooms, _aStar, _primsAlg);
         _roomGenerator.BuildRooms(_aStar);
     }
 }

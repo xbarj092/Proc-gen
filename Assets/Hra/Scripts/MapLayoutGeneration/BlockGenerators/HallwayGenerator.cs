@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class HallwayGenerator : MonoBehaviour
 {
-    private List<List<PathNode>> _placedHallways = new List<List<PathNode>>();
+    [SerializeField] private GameObject _hallwayPrefab;
+    [SerializeField] private GameObject _hallwayFloorPrefab;
 
-    public void GenerateHallways(List<Triangle> triangles, List<Room> placedRooms, AStar aStar, PrimsAlg primsAlg, GameObject hallwayPrefab)
+    private List<List<PathNode>> _paths = new List<List<PathNode>>();
+
+    public void GenerateHallways(List<Triangle> triangles, List<Room> placedRooms, AStar aStar, PrimsAlg primsAlg)
     {
         List<RoomConnection> hallways = primsAlg.CreateTriMesh(triangles, placedRooms);
         foreach (RoomConnection roomConnection in hallways)
@@ -64,14 +68,11 @@ public class HallwayGenerator : MonoBehaviour
                 }
             }
 
-            List<PathNode> path = aStar.FindPath(closestStartNode.X, closestStartNode.Y, closestEndNode.X, closestEndNode.Y);
+            _paths.Add(aStar.FindPath(closestStartNode.X, closestStartNode.Y, closestEndNode.X, closestEndNode.Y));
+        }
 
-            if (path == null || path.Count <= 0)
-            {
-                Debug.LogError("Path is null or empty");
-                continue;
-            }
-
+        foreach (List<PathNode> path in _paths)
+        {
             foreach (PathNode pathNode in path)
             {
                 PathNode leftNode = null;
@@ -85,22 +86,22 @@ public class HallwayGenerator : MonoBehaviour
                     {
                         if (neighbourNode.X == pathNode.X)
                         {
-                            if (neighbourNode.Y < pathNode.Y)
+                            if (neighbourNode.Y == pathNode.Y - 1)
                             {
                                 bottomNode = neighbourNode;
                             }
-                            else if (neighbourNode.Y > pathNode.Y)
+                            else if (neighbourNode.Y == pathNode.Y + 1)
                             {
                                 topNode = neighbourNode;
                             }
                         }
                         else if (neighbourNode.Y == pathNode.Y)
                         {
-                            if (neighbourNode.X < pathNode.X)
+                            if (neighbourNode.X == pathNode.X - 1)
                             {
                                 leftNode = neighbourNode;
                             }
-                            else
+                            else if (neighbourNode.X == pathNode.X + 1)
                             {
                                 rightNode = neighbourNode;
                             }
@@ -114,86 +115,90 @@ public class HallwayGenerator : MonoBehaviour
                 {
                     if (rightNode == null && leftNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode == null && rightNode != null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode != null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                 }
                 else if (topNode != null && bottomNode == null)
                 {
                     if (leftNode == null && rightNode != null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode != null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode == null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
 
-                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
+                    InstantiateHallway(pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
                 }
                 else if (topNode == null && bottomNode != null)
                 {
                     if (leftNode == null && rightNode != null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode != null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode == null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
 
-                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
+                    InstantiateHallway(pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
                 }
                 else if (topNode == null && bottomNode == null)
                 {
                     if (leftNode != null && rightNode == null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
                     else if (leftNode == null && rightNode != null)
                     {
-                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                     }
 
-                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
-                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
+                    InstantiateHallway(pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
+                    InstantiateHallway(pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
                 }
-            }
-        }
 
-        foreach (Room room in placedRooms)
-        {
-            foreach (Collider collider in Physics.OverlapBox(room.transform.position, new Vector3(room.transform.localScale.x, room.transform.localScale.y, room.transform.localScale.z) / 2.1f))
+                InstantiateHallway(pathNode, new Vector3(0, -0.5f, 0), new Vector3(1, 0.05f, 1));
+            }
+
+            foreach (Room room in placedRooms)
             {
-                if (collider.gameObject.CompareTag("Hallway"))
+                foreach (Collider collider in Physics.OverlapBox(room.transform.position, new Vector3(room.transform.localScale.x, room.transform.localScale.y, room.transform.localScale.z) / 2.1f))
                 {
-                    Destroy(collider.gameObject);
+                    if (collider.gameObject.CompareTag("Hallway"))
+                    {
+                        Destroy(collider.gameObject);
+                    }
                 }
             }
+
+
         }
     }
 
-    private void InstantiateHallway(GameObject hallway, PathNode pathNode, Vector3 hallwayOffset, Vector3 hallwayScale)
+    private void InstantiateHallway(PathNode pathNode, Vector3 hallwayOffset, Vector3 hallwayScale)
     {
         Vector3 wallPosition = new Vector3(pathNode.X, 0, pathNode.Y) + hallwayOffset;
-        Instantiate(hallway, wallPosition, Quaternion.identity).transform.localScale = hallwayScale;
+        Instantiate(_hallwayPrefab, wallPosition, Quaternion.identity).transform.localScale = hallwayScale;
     }
 }

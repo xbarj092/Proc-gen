@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour
 {
+    [SerializeField] private Room _roomPrefab;
+    [SerializeField] private GameObject _floorPrefab;
+
     private List<Room> _placedRooms = new List<Room>();
     public List<Room> PlacedRooms
     {
         get { return _placedRooms; }
     }
 
-    public void GenerateRooms(int dungeonSizeX, int dungeonSizeY, int amountOfRooms, AStar aStar, Room room)
+    public void GenerateRooms(int dungeonSizeX, int dungeonSizeY, int amountOfRooms, AStar aStar)
     {
         for (int i = 0; i < amountOfRooms; i++)
         {
@@ -18,7 +21,7 @@ public class RoomGenerator : MonoBehaviour
 
             int randomEvenX = Random.Range(minEvenValue / 2, maxEvenValue / 2 + 1) * 2;
             int randomEvenZ = Random.Range(minEvenValue / 2, maxEvenValue / 2 + 1) * 2;
-            Room newRoom = room;
+            Room newRoom = _roomPrefab;
             newRoom.transform.localScale = new Vector3(randomEvenX + 1, 1, randomEvenZ + 1);
             int positionX, positionY, numberOfTries = 0;
             Vector3 transform = Vector3.zero;
@@ -38,6 +41,8 @@ public class RoomGenerator : MonoBehaviour
             if (numberOfTries <= 100)
             {
                 newRoom = Instantiate(newRoom, transform, Quaternion.identity);
+                GameObject floor = Instantiate(_floorPrefab, new Vector3(transform.x, -0.5f, transform.z), Quaternion.identity);
+                floor.transform.localScale = new Vector3(newRoom.transform.localScale.x, 0.05f, newRoom.transform.localScale.z);
                 _placedRooms.Add(newRoom);
                 Vector3 roomPosition = newRoom.transform.position;
                 Vector3 roomScale = newRoom.transform.localScale;
