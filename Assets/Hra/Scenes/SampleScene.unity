@@ -306,7 +306,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 20, y: 50, z: 20}
+  m_LocalPosition: {x: 30, y: 50, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -324,6 +324,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84303962e108d494f88969f20a904aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roomPrefab: {fileID: 8088559948567776339, guid: 53ee178a399ba144894106bcbb79dd34, type: 3}
+  _floorPrefab: {fileID: 6830563981760575893, guid: 12a2132f91919ff47bd91c888c9f70ad, type: 3}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9585a76f320e4c947b4a1ed0e0b206a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hallwayPrefab: {fileID: 3773701088161243875, guid: 9b7d82298c682a0449a0a689497b4642, type: 3}
+  _hallwayFloorPrefab: {fileID: 0}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,8 +352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faec6987986a79e4fb5121d3667e8461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _room: {fileID: 8088559948567776339, guid: 53ee178a399ba144894106bcbb79dd34, type: 3}
-  _hallway: {fileID: 3773701088161243875, guid: 9b7d82298c682a0449a0a689497b4642, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

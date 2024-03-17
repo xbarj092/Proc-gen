@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection.Emit;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.UIElements;
 
 public class HallwayGenerator : MonoBehaviour
 {
@@ -8,6 +13,7 @@ public class HallwayGenerator : MonoBehaviour
     [SerializeField] private GameObject _hallwayFloorPrefab;
 
     private List<List<PathNode>> _paths = new List<List<PathNode>>();
+    private List<PathNode> _edgeNodes = new List<PathNode>();
 
     public void GenerateHallways(List<Triangle> triangles, List<Room> placedRooms, AStar aStar, PrimsAlg primsAlg)
     {
@@ -73,6 +79,8 @@ public class HallwayGenerator : MonoBehaviour
 
         foreach (List<PathNode> path in _paths)
         {
+            _edgeNodes.AddRange(new List<PathNode>() { path.ElementAt(path.Count - 2), path.ElementAt(1)});
+
             foreach (PathNode pathNode in path)
             {
                 PathNode leftNode = null;
@@ -191,8 +199,34 @@ public class HallwayGenerator : MonoBehaviour
                     }
                 }
             }
+        }
+    }
 
+    public void MakeRoomEntrances(AStar aStar)
+    {
+        foreach (PathNode node in _edgeNodes)
+        {
+            Vector3 worldPos = aStar.GetGrid().GetWorldPosition(node.X, node.Y);
 
+            DestroyAdjacentRoom(worldPos, Vector3.left);
+            DestroyAdjacentRoom(worldPos, Vector3.right);
+            DestroyAdjacentRoom(worldPos, Vector3.forward);
+            DestroyAdjacentRoom(worldPos, Vector3.back);
+        }
+    }
+
+    private void DestroyAdjacentRoom(Vector3 position, Vector3 direction)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(position, direction * 0.5f, out hit, 0.5f))
+        {
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Room"))
+            {
+                Debug.DrawRay(position, direction * hit.distance, Color.green, 100);
+                Debug.Log("object position -" + hit.collider.transform.position);
+                Debug.Log(direction.ToString() + " Destroying room at: " + hit.collider.transform.position);
+                Destroy(hit.collider.gameObject);
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -25,5 +26,12 @@ public class MapGenerator : MonoBehaviour
         _roomGenerator.GenerateRooms(DUNGEON_SIZE_X, DUNGEON_SIZE_Y, 50, _aStar);
         _hallwayGenerator.GenerateHallways(_bowyerWatson.GenerateTriangularMesh(_roomGenerator.PlacedRooms), _roomGenerator.PlacedRooms, _aStar, _primsAlg);
         _roomGenerator.BuildRooms(_aStar);
+        StartCoroutine(nameof(WaitForHallways));
+    }
+
+    private IEnumerator WaitForHallways()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _hallwayGenerator.MakeRoomEntrances(_aStar);
     }
 }
