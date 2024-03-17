@@ -75,7 +75,7 @@ public class AStar
         return null;
     }
 
-    private List<PathNode> GetNeighbourList(PathNode currentNode)
+    public List<PathNode> GetNeighbourList(PathNode currentNode)
     {
         List<PathNode> neighbourList = new List<PathNode>();
         if (currentNode.X - 1 >= 0) neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y));

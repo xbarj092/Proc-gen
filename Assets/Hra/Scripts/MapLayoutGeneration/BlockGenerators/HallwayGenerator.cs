@@ -74,8 +74,108 @@ public class HallwayGenerator : MonoBehaviour
 
             foreach (PathNode pathNode in path)
             {
-                GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pathNode.X, 0, pathNode.Y), Quaternion.identity);
-                hallway.transform.localScale = new Vector3(1, 1, 1);
+                PathNode leftNode = null;
+                PathNode rightNode = null;
+                PathNode topNode = null;
+                PathNode bottomNode = null;
+
+                foreach (PathNode neighbourNode in aStar.GetNeighbourList(pathNode))
+                {
+                    if (neighbourNode.NodeType == NodeType.Hallway)
+                    {
+                        if (neighbourNode.X == pathNode.X)
+                        {
+                            if (neighbourNode.Y < pathNode.Y)
+                            {
+                                bottomNode = neighbourNode;
+                            }
+                            else if (neighbourNode.Y > pathNode.Y)
+                            {
+                                topNode = neighbourNode;
+                            }
+                        }
+                        else if (neighbourNode.Y == pathNode.Y)
+                        {
+                            if (neighbourNode.X < pathNode.X)
+                            {
+                                leftNode = neighbourNode;
+                            }
+                            else
+                            {
+                                rightNode = neighbourNode;
+                            }
+                        }
+                    }
+                }
+
+                // TODO - destroy ovelapping hallways
+                // TODO - create room entrances
+                if (topNode != null && bottomNode != null)
+                {
+                    if (rightNode == null && leftNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode == null && rightNode != null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode != null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                }
+                else if (topNode != null && bottomNode == null)
+                {
+                    if (leftNode == null && rightNode != null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode != null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode == null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+
+                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
+                }
+                else if (topNode == null && bottomNode != null)
+                {
+                    if (leftNode == null && rightNode != null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode != null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode == null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+
+                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
+                }
+                else if (topNode == null && bottomNode == null)
+                {
+                    if (leftNode != null && rightNode == null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+                    else if (leftNode == null && rightNode != null)
+                    {
+                        InstantiateHallway(hallwayPrefab, pathNode, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                    }
+
+                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
+                    InstantiateHallway(hallwayPrefab, pathNode, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
+                }
             }
         }
 
@@ -89,5 +189,11 @@ public class HallwayGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void InstantiateHallway(GameObject hallway, PathNode pathNode, Vector3 hallwayOffset, Vector3 hallwayScale)
+    {
+        Vector3 wallPosition = new Vector3(pathNode.X, 0, pathNode.Y) + hallwayOffset;
+        Instantiate(hallway, wallPosition, Quaternion.identity).transform.localScale = hallwayScale;
     }
 }

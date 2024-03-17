@@ -90,31 +90,31 @@ public class RoomGenerator : MonoBehaviour
                             Vector3 tilePosition = new Vector3(x, 0, y);
                             if (x == startXMin && y == startYMin) // Bottom-left corner
                             {
-                                BuildSideWall(room, tilePosition, new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 1, 1));
-                                BuildSideWall(room, tilePosition, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.5f));
+                                BuildSideWall(room, tilePosition, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                                BuildSideWall(room, tilePosition, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
                             }
                             else if (x == startXMin && y == startYMax) // Top-left corner
                             {
-                                BuildSideWall(room, tilePosition, new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 1, 1));
-                                BuildSideWall(room, tilePosition, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.5f));
+                                BuildSideWall(room, tilePosition, new Vector3(-0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                                BuildSideWall(room, tilePosition, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
                             }
                             else if (x == startXMax && y == startYMin) // Bottom-right corner
                             {
-                                BuildSideWall(room, tilePosition, new Vector3(0.5f, 0, 0), new Vector3(0.5f, 1, 1));
-                                BuildSideWall(room, tilePosition, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.5f));
+                                BuildSideWall(room, tilePosition, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                                BuildSideWall(room, tilePosition, new Vector3(0, 0, -0.5f), new Vector3(1, 1, 0.05f));
                             }
                             else if (x == startXMax && y == startYMax) // Top-right corner
                             {
-                                BuildSideWall(room, tilePosition, new Vector3(0.5f, 0, 0), new Vector3(0.5f, 1, 1));
-                                BuildSideWall(room, tilePosition, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.5f));
+                                BuildSideWall(room, tilePosition, new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
+                                BuildSideWall(room, tilePosition, new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
                             }
                             else if (x == startXMin || x == startXMax) // Left or Right side
                             {
-                                BuildSideWall(room, tilePosition, (x == startXMin) ? new Vector3(-0.5f, 0, 0) : new Vector3(0.5f, 0, 0), new Vector3(0.5f, 1, 1));
+                                BuildSideWall(room, tilePosition, (x == startXMin) ? new Vector3(-0.5f, 0, 0) : new Vector3(0.5f, 0, 0), new Vector3(0.05f, 1, 1));
                             }
                             else if (y == startYMin || y == startYMax) // Bottom or Top side
                             {
-                                BuildSideWall(room, tilePosition, (y == startYMin) ? new Vector3(0, 0, -0.5f) : new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.5f));
+                                BuildSideWall(room, tilePosition, (y == startYMin) ? new Vector3(0, 0, -0.5f) : new Vector3(0, 0, 0.5f), new Vector3(1, 1, 0.05f));
                             }
                         }
                     }
