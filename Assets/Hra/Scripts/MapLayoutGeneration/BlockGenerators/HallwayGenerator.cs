@@ -97,7 +97,7 @@ namespace MapGenerator
                                 if (endNode != null)
                                 {
                                     float currentDistance = Vector2.Distance(new Vector2(xStart, yStart), new Vector2(xEnd, yEnd));
-                                    if (currentDistance < minDistance)
+                                    if (currentDistance <= minDistance)
                                     {
                                         closestStartNode = startNode;
                                         closestEndNode = endNode;
