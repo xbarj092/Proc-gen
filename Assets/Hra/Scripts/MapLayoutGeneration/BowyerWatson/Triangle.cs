@@ -1,92 +1,118 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Triangle
+namespace MapGenerator
 {
-    public Vector2[] Vertices { get; private set; }
-    public Edge[] Edges { get; private set; }
-
-    public Triangle(Vector2 p1, Vector2 p2, Vector2 p3)
+    internal class Triangle
     {
-        Vertices = new Vector2[] { p1, p2, p3 };
-        Edges = new Edge[]
+        /// <summary>
+        /// Gets the vertices of the triangle.
+        /// </summary>
+        internal Vector2[] Vertices { get; private set; }
+
+        /// <summary>
+        /// Gets the edges of the triangle.
+        /// </summary>
+        internal Edge[] Edges { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Triangle"/> class with the specified vertices.
+        /// </summary>
+        /// <param name="p1">The first vertex of the triangle.</param>
+        /// <param name="p2">The second vertex of the triangle.</param>
+        /// <param name="p3">The third vertex of the triangle.</param>
+        internal Triangle(Vector2 p1, Vector2 p2, Vector2 p3)
         {
-            new Edge(p1, p2),
-            new Edge(p2, p3),
-            new Edge(p3, p1)
-        };
-    }
-
-    private Vector2 Circumcenter()
-    {
-        // fuck barycentrický souøadnice
-        float A = Vertices[1].x - Vertices[0].x;
-        float B = Vertices[1].y - Vertices[0].y;
-        float C = Vertices[2].x - Vertices[0].x;
-        float D = Vertices[2].y - Vertices[0].y;
-        float E = A * (Vertices[0].x + Vertices[1].x) + B * (Vertices[0].y + Vertices[1].y);
-        float F = C * (Vertices[0].x + Vertices[2].x) + D * (Vertices[0].y + Vertices[2].y);
-        float G = 2 * (A * (Vertices[2].y - Vertices[1].y) - B * (Vertices[2].x - Vertices[1].x));
-
-        float circumcenterX = (D * E - B * F) / G;
-        float circumcenterY = (A * F - C * E) / G;
-
-        return new Vector2(circumcenterX, circumcenterY);
-    }
-
-    private float SquaredDistance(Vector2 p1, Vector2 p2)
-    {
-        float dx = p2.x - p1.x;
-        float dy = p2.y - p1.y;
-        return dx * dx + dy * dy;
-    }
-
-    public bool IsPointInsideCircumcircle(Vector2 point)
-    {
-        Vector2 circumcenter = Circumcenter();
-        float radiusSquared = SquaredDistance(Vertices[0], circumcenter);
-        float distanceSquared = SquaredDistance(circumcenter, point);
-        return distanceSquared <= radiusSquared;
-    }
-
-    public bool HasEdge(Edge edge)
-    {
-        foreach (Edge e in Edges)
-        {
-            if (e.Equals(edge))
+            Vertices = new Vector2[] { p1, p2, p3 };
+            Edges = new Edge[]
             {
-                return true;
-            }
+            new(p1, p2),
+            new(p2, p3),
+            new(p3, p1)
+            };
         }
-        return false;
-    }
 
-    public bool HasVertexOf(Triangle triangle)
-    {
-        foreach (Vector2 vertex in Vertices)
+        /// <summary>
+        /// Calculates the circumcenter of the triangle.
+        /// </summary>
+        /// <returns>The circumcenter of the triangle.</returns>
+        private Vector2 Circumcenter()
         {
-            foreach (Vector2 otherVertex in triangle.Vertices)
+            // fuck barycentric coords
+            float deltaX01 = Vertices[1].x - Vertices[0].x;
+            float deltaY01 = Vertices[1].y - Vertices[0].y;
+            float deltaX02 = Vertices[2].x - Vertices[0].x;
+            float deltaY02 = Vertices[2].y - Vertices[0].y;
+            float constant1 = deltaX01 * (Vertices[0].x + Vertices[1].x) + deltaY01 * (Vertices[0].y + Vertices[1].y);
+            float constant2 = deltaX02 * (Vertices[0].x + Vertices[2].x) + deltaY02 * (Vertices[0].y + Vertices[2].y);
+            float denominator = 2 * (deltaX01 * (Vertices[2].y - Vertices[1].y) - deltaY01 * (Vertices[2].x - Vertices[1].x));
+
+            float circumcenterX = (deltaY02 * constant1 - deltaY01 * constant2) / denominator;
+            float circumcenterY = (deltaX01 * constant2 - deltaX02 * constant1) / denominator;
+
+            return new Vector2(circumcenterX, circumcenterY);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two points.
+        /// </summary>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <returns>The squared distance between the two points.</returns>
+        private float SquaredDistance(Vector2 p1, Vector2 p2)
+        {
+            float dx = p2.x - p1.x;
+            float dy = p2.y - p1.y;
+            return dx * dx + dy * dy;
+        }
+
+        /// <summary>
+        /// Determines whether the specified point lies inside the circumcircle of the triangle.
+        /// </summary>
+        /// <param name="point">The point to test.</param>
+        /// <returns>True if the point lies inside the circumcircle, otherwise false.</returns>
+        internal bool IsPointInsideCircumcircle(Vector2 point)
+        {
+            Vector2 circumcenter = Circumcenter();
+            float radiusSquared = SquaredDistance(Vertices[0], circumcenter);
+            float distanceSquared = SquaredDistance(circumcenter, point);
+            return distanceSquared <= radiusSquared;
+        }
+
+        /// <summary>
+        /// Determines whether the triangle has the specified edge.
+        /// </summary>
+        /// <param name="edge">The edge to check.</param>
+        /// <returns>True if the triangle has the edge, otherwise false.</returns>
+        internal bool HasEdge(Edge edge)
+        {
+            foreach (Edge e in Edges)
             {
-                if (vertex.Equals(otherVertex))
+                if (e.Equals(edge))
                 {
                     return true;
                 }
             }
+            return false;
         }
-        return false;
-    }
 
-    public void DrawEdges(Edge edge)
-    {
-        Debug.Log(edge);
-        LineRenderer lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        lineRenderer.startColor = Color.red;
-        lineRenderer.endColor = Color.red;
-        lineRenderer.startWidth = 0.05f;
-        lineRenderer.endWidth = 0.05f;
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, new Vector3(edge.Point1.x, 0, edge.Point1.y));
-        lineRenderer.SetPosition(1, new Vector3(edge.Point2.x, 0, edge.Point2.y));
+        /// <summary>
+        /// Determines whether the triangle shares a vertex with another triangle.
+        /// </summary>
+        /// <param name="triangle">The other triangle to compare vertices with.</param>
+        /// <returns>True if the triangle shares a vertex with the other triangle, otherwise false.</returns>
+        internal bool HasVertexOf(Triangle triangle)
+        {
+            foreach (Vector2 vertex in Vertices)
+            {
+                foreach (Vector2 otherVertex in triangle.Vertices)
+                {
+                    if (vertex.Equals(otherVertex))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

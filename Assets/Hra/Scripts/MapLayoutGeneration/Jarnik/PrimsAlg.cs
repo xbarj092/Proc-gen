@@ -2,141 +2,144 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public struct RoomConnection
+namespace MapGenerator
 {
-    public Room StartRoom;
-    public Room EndRoom;
-    public float Distance;
-}
-
-public class PrimsAlg
-{
-    private Dictionary<Room, List<RoomConnection>> _roomDistances = new();
-    private List<RoomConnection> _roomConnections = new();
-
-    public List<RoomConnection> CreateTriMesh(List<Triangle> triangles, List<Room> placedRooms)
+    internal struct RoomConnection
     {
-        foreach (Room room in placedRooms)
-        {
-            foreach (Triangle triangle in triangles.Where(tri => tri.Vertices.Any(vertice =>
-                vertice.x == room.transform.position.x && vertice.y == room.transform.position.z)))
-            {
-                foreach (Edge edge in triangle.Edges)
-                {
-                    RoomConnection roomConnection = RoomConnectionBuilder(edge, placedRooms);
-                    if (roomConnection.EndRoom != room &&
-                        (!_roomDistances.ContainsKey(room) ||
-                         !_roomDistances[room].Any(room => room.EndRoom == roomConnection.EndRoom)))
-                    {
-                        _roomDistances[room] = _roomDistances.TryGetValue(room, out var list) ?
-                            list.Append(roomConnection).ToList() : new List<RoomConnection> { roomConnection };
-                    }
-                }
-            }
-        }
-
-        CalculateSkeleton();
-        MakeSomeLoops();
-        return _roomConnections;
+        internal Room StartRoom;
+        internal Room EndRoom;
+        internal float Distance;
     }
 
-    public void CalculateSkeleton()
+    internal class PrimsAlg
     {
-        Dictionary<Room, List<RoomConnection>> remainingRooms = new Dictionary<Room, List<RoomConnection>>(_roomDistances);
-        List<Room> visitedRooms = new List<Room>();
-        Room currentRoom = _roomDistances.Keys.First();
-        visitedRooms.Add(currentRoom);
+        private Dictionary<Room, List<RoomConnection>> _roomDistances = new();
+        private List<RoomConnection> _roomConnections = new();
 
-        int connectedCount = 1;
-        while (connectedCount < _roomDistances.Count)
+        internal List<RoomConnection> CreateTriMesh(List<Triangle> triangles, List<Room> placedRooms)
         {
-            List<Room> occupiedRooms = new List<Room>();
-            foreach (Room room in remainingRooms.Keys)
+            foreach (Room room in placedRooms)
             {
-                bool toRemove = true;
-                foreach (RoomConnection roomConnection in remainingRooms[room])
+                foreach (Triangle triangle in triangles.Where(tri => tri.Vertices.Any(vertice =>
+                    vertice.x == room.transform.position.x && vertice.y == room.transform.position.z)))
                 {
-                    if (!visitedRooms.Contains(roomConnection.EndRoom))
+                    foreach (Edge edge in triangle.Edges)
                     {
-                        toRemove = false;
+                        RoomConnection roomConnection = RoomConnectionBuilder(edge, placedRooms);
+                        if (roomConnection.EndRoom != room &&
+                            (!_roomDistances.ContainsKey(room) ||
+                             !_roomDistances[room].Any(room => room.EndRoom == roomConnection.EndRoom)))
+                        {
+                            _roomDistances[room] = _roomDistances.TryGetValue(room, out var list) ?
+                                list.Append(roomConnection).ToList() : new List<RoomConnection> { roomConnection };
+                        }
                     }
-                }
-
-                if (toRemove)
-                {
-                    occupiedRooms.Add(room);
                 }
             }
 
-            foreach (Room occupiedRoom in occupiedRooms)
-            {
-                remainingRooms.Remove(occupiedRoom);
-            }
+            CalculateSkeleton();
+            MakeSomeLoops();
+            return _roomConnections;
+        }
 
-            List<RoomConnection> roomConnections = _roomDistances[currentRoom];
-            roomConnections = roomConnections.OrderBy(connection => connection.Distance).ToList();
-            RoomConnection currentConnection = roomConnections.FirstOrDefault(connection => !visitedRooms.Contains(connection.EndRoom) && visitedRooms.Contains(connection.StartRoom) && remainingRooms.ContainsKey(connection.StartRoom));
+        internal void CalculateSkeleton()
+        {
+            Dictionary<Room, List<RoomConnection>> remainingRooms = new Dictionary<Room, List<RoomConnection>>(_roomDistances);
+            List<Room> visitedRooms = new List<Room>();
+            Room currentRoom = _roomDistances.Keys.First();
+            visitedRooms.Add(currentRoom);
 
-            if (currentConnection.EndRoom == null)
+            int connectedCount = 1;
+            while (connectedCount < _roomDistances.Count)
             {
-                remainingRooms.Remove(currentRoom);
-                foreach (Room room in _roomDistances.Keys)
+                List<Room> occupiedRooms = new List<Room>();
+                foreach (Room room in remainingRooms.Keys)
                 {
-                    if (visitedRooms.Contains(room))
+                    bool toRemove = true;
+                    foreach (RoomConnection roomConnection in remainingRooms[room])
                     {
-                        roomConnections.AddRange(_roomDistances[room].Where(connection => !visitedRooms.Contains(connection.EndRoom)));
+                        if (!visitedRooms.Contains(roomConnection.EndRoom))
+                        {
+                            toRemove = false;
+                        }
+                    }
+
+                    if (toRemove)
+                    {
+                        occupiedRooms.Add(room);
                     }
                 }
 
+                foreach (Room occupiedRoom in occupiedRooms)
+                {
+                    remainingRooms.Remove(occupiedRoom);
+                }
+
+                List<RoomConnection> roomConnections = _roomDistances[currentRoom];
                 roomConnections = roomConnections.OrderBy(connection => connection.Distance).ToList();
-                currentConnection = roomConnections.FirstOrDefault(connection => !visitedRooms.Contains(connection.EndRoom) && visitedRooms.Contains(connection.StartRoom) && remainingRooms.ContainsKey(connection.StartRoom));
+                RoomConnection currentConnection = roomConnections.FirstOrDefault(connection => !visitedRooms.Contains(connection.EndRoom) && visitedRooms.Contains(connection.StartRoom) && remainingRooms.ContainsKey(connection.StartRoom));
 
-                Room availableRoom = currentConnection.EndRoom;
-
-                if (availableRoom != null)
+                if (currentConnection.EndRoom == null)
                 {
-                    currentRoom = availableRoom;
-                    visitedRooms.Add(currentConnection.EndRoom);
-                    _roomConnections.Add(currentConnection);
+                    remainingRooms.Remove(currentRoom);
+                    foreach (Room room in _roomDistances.Keys)
+                    {
+                        if (visitedRooms.Contains(room))
+                        {
+                            roomConnections.AddRange(_roomDistances[room].Where(connection => !visitedRooms.Contains(connection.EndRoom)));
+                        }
+                    }
+
+                    roomConnections = roomConnections.OrderBy(connection => connection.Distance).ToList();
+                    currentConnection = roomConnections.FirstOrDefault(connection => !visitedRooms.Contains(connection.EndRoom) && visitedRooms.Contains(connection.StartRoom) && remainingRooms.ContainsKey(connection.StartRoom));
+
+                    Room availableRoom = currentConnection.EndRoom;
+
+                    if (availableRoom != null)
+                    {
+                        currentRoom = availableRoom;
+                        visitedRooms.Add(currentConnection.EndRoom);
+                        _roomConnections.Add(currentConnection);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 else
                 {
-                    break;
+                    visitedRooms.Add(currentConnection.EndRoom);
+                    _roomConnections.Add(currentConnection);
+                    currentRoom = currentConnection.EndRoom;
+                    connectedCount++;
                 }
             }
-            else
-            {
-                visitedRooms.Add(currentConnection.EndRoom);
-                _roomConnections.Add(currentConnection);
-                currentRoom = currentConnection.EndRoom;
-                connectedCount++;
-            }
         }
-    }
 
-    private RoomConnection RoomConnectionBuilder(Edge edge, List<Room> placedRooms)
-    {
-        return new RoomConnection()
+        private RoomConnection RoomConnectionBuilder(Edge edge, List<Room> placedRooms)
         {
-            StartRoom = placedRooms.FirstOrDefault(room => room.transform.position.x == edge.Point1.x &&
-                room.transform.position.z == edge.Point1.y),
-            EndRoom = placedRooms.FirstOrDefault(room => room.transform.position.x == edge.Point2.x &&
-                room.transform.position.z == edge.Point2.y),
-            Distance = Vector2.Distance(edge.Point1, edge.Point2)
-        };
-    }
-
-    private void MakeSomeLoops()
-    {
-        foreach (Room room in _roomDistances.Keys)
-        {
-            foreach (RoomConnection roomConnection in _roomDistances[room])
+            return new RoomConnection()
             {
-                if (!_roomConnections.Contains(roomConnection) && !_roomConnections.Any(connection => connection.StartRoom == roomConnection.EndRoom && connection.EndRoom == roomConnection.StartRoom))
+                StartRoom = placedRooms.FirstOrDefault(room => room.transform.position.x == edge.Point1.x &&
+                    room.transform.position.z == edge.Point1.y),
+                EndRoom = placedRooms.FirstOrDefault(room => room.transform.position.x == edge.Point2.x &&
+                    room.transform.position.z == edge.Point2.y),
+                Distance = Vector2.Distance(edge.Point1, edge.Point2)
+            };
+        }
+
+        private void MakeSomeLoops()
+        {
+            foreach (Room room in _roomDistances.Keys)
+            {
+                foreach (RoomConnection roomConnection in _roomDistances[room])
                 {
-                    if (UnityEngine.Random.Range(0, 10) == 1)
+                    if (!_roomConnections.Contains(roomConnection) && !_roomConnections.Any(connection => connection.StartRoom == roomConnection.EndRoom && connection.EndRoom == roomConnection.StartRoom))
                     {
-                        _roomConnections.Add(roomConnection);
+                        if (UnityEngine.Random.Range(0, 10) == 1)
+                        {
+                            _roomConnections.Add(roomConnection);
+                        }
                     }
                 }
             }
