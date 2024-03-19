@@ -36,7 +36,8 @@ namespace MapGenerator
         /// <param name="primsAlg">Prim's algorithm instance.</param>
         /// <param name="hallwayPrefab">Prefab for hallway walls.</param>
         /// <param name="hallwayFloorPrefab">Prefab for hallway floors.</param>
-        internal void GenerateHallways(List<Triangle> triangles, List<Room> placedRooms, AStar aStar, PrimsAlg primsAlg, GameObject hallwayPrefab, GameObject hallwayFloorPrefab)
+        internal void GenerateHallways(List<Triangle> triangles, List<Room> placedRooms, AStar aStar, 
+            PrimsAlg primsAlg, GameObject hallwayPrefab, GameObject hallwayFloorPrefab)
         {
             _hallwayPrefab = hallwayPrefab;
             _hallwayFloorPrefab = hallwayFloorPrefab;
@@ -130,7 +131,8 @@ namespace MapGenerator
 
                 foreach (Room room in placedRooms)
                 {
-                    foreach (Collider collider in Physics.OverlapBox(room.transform.position, new Vector3(room.transform.localScale.x, room.transform.localScale.y, room.transform.localScale.z) / 2.1f))
+                    foreach (Collider collider in Physics.OverlapBox(room.transform.position, 
+                        new Vector3(room.transform.localScale.x, room.transform.localScale.y, room.transform.localScale.z) / 2.1f))
                     {
                         if (collider.gameObject.CompareTag(GlobalConstants.Tags.TAG_HALLWAY))
                         {

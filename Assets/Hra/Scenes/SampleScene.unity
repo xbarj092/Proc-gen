@@ -229,7 +229,6 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194231}
-  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -311,20 +310,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84303962e108d494f88969f20a904aac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _roomPrefab: {fileID: 8088559948567776339, guid: 53ee178a399ba144894106bcbb79dd34, type: 3}
-  _floorPrefab: {fileID: 6830563981760575893, guid: 12a2132f91919ff47bd91c888c9f70ad, type: 3}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faec6987986a79e4fb5121d3667e8461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roomPrefab: {fileID: 8088559948567776339, guid: 53ee178a399ba144894106bcbb79dd34, type: 3}
+  _floorPrefab: {fileID: 6830563981760575893, guid: 12a2132f91919ff47bd91c888c9f70ad, type: 3}
   _hallwayPrefab: {fileID: 3773701088161243875, guid: 9b7d82298c682a0449a0a689497b4642, type: 3}
   _hallwayFloorPrefab: {fileID: 2408737562627702521, guid: 35e4b7aa508b73b49991b32a35b4fa7a, type: 3}
 --- !u!1660057539 &9223372036854775807
