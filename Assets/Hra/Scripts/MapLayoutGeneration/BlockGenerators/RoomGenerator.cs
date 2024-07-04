@@ -32,6 +32,7 @@ namespace MapGenerator
         /// <param name="aStar">The AStar instance used for pathfinding.</param>
         internal void GenerateRooms(int dungeonSizeX, int dungeonSizeY, int amountOfRooms, AStar aStar, Room roomPrefab, GameObject roomFloorPrefab)
         {
+            GenerateBaseRooms(aStar, roomPrefab, roomFloorPrefab);
             for (int i = 0; i < amountOfRooms; i++)
             {
                 Room newRoom = roomPrefab;
@@ -53,6 +54,20 @@ namespace MapGenerator
 
                 PlaceRoom(numberOfTries, transform, newRoom, aStar, roomFloorPrefab);
             }
+        }
+
+        private void GenerateBaseRooms(AStar aStar, Room roomPrefab, GameObject roomFloorPrefab)
+        {
+            GenerateRoom(aStar, roomPrefab, roomFloorPrefab, 10, 10);
+            GenerateRoom(aStar, roomPrefab, roomFloorPrefab, 60, 60);
+        }
+
+        private void GenerateRoom(AStar aStar, Room roomPrefab, GameObject roomFloorPrefab, int x, int y)
+        {
+            Room newRoom = roomPrefab;
+            newRoom.transform.localScale = GetRoomScale();
+            Vector3 transform = new(x, 0, y);
+            PlaceRoom(0, transform, newRoom, aStar, roomFloorPrefab);
         }
 
         /// <summary>

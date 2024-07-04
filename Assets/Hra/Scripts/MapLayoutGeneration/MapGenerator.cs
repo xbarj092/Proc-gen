@@ -66,6 +66,8 @@ namespace MapGenerator
 
         private void Start()
         {
+            // TODO - generate 2 rooms at the start - start room and boss room
+            // put the player in the start room
             _roomGenerator.GenerateRooms(DUNGEON_SIZE_X, DUNGEON_SIZE_Y, 50, _aStar, _roomPrefab, _floorPrefab);
             _hallwayGenerator.GenerateHallways(_bowyerWatson.GenerateTriangularMesh(_roomGenerator.PlacedRooms), 
                 _roomGenerator.PlacedRooms, _aStar, _primsAlg, _hallwayPrefab, _hallwayFloorPrefab);
@@ -82,22 +84,22 @@ namespace MapGenerator
         #region Event methods
         private void InstantiateWall(Room prefab, Vector3 position, Vector3 scale)
         {
-            Instantiate(prefab, position, Quaternion.identity).transform.localScale = scale;
+            Instantiate(prefab, position, Quaternion.identity, transform).transform.localScale = scale;
         }
 
         private void InstantiateRoom(Room room, Vector3 position)
         {
-            _roomGenerator.PlacedRooms.Add(Instantiate(room, position, Quaternion.identity));
+            _roomGenerator.PlacedRooms.Add(Instantiate(room, position, Quaternion.identity, transform));
         }
 
         private void InstantiateGameObject(GameObject prefab, Vector3 position)
         {
-            Instantiate(prefab, position, Quaternion.identity);
+            Instantiate(prefab, position, Quaternion.identity, transform);
         }
 
         private void InstantiateHallwayWall(GameObject gameObject, Vector3 position, Vector3 scale)
         {
-            Instantiate(gameObject, position, Quaternion.identity).transform.localScale = scale;
+            Instantiate(gameObject, position, Quaternion.identity, transform).transform.localScale = scale;
         }
 
         private void DestroyGameObject(GameObject gameObject)
