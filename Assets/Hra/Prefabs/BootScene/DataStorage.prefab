@@ -51,4 +51,10 @@ MonoBehaviour:
       <NextLevelXP>k__BackingField: 0
       <XPToNextLevel>k__BackingField: 0
       <TotalXP>k__BackingField: 0
-  GameData: {fileID: 0}
+    _transformData:
+      Position: []
+      Rotation: []
+  GameData:
+    _mapTransformData:
+      WallTransformData: []
+      FloorTransformData: []
