@@ -4,6 +4,17 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
+    [SerializeField] private PlayerStatistics _playerStatistics;
+    public PlayerStatistics PlayerStatistics
+    {
+        get => _playerStatistics;
+        set
+        {
+            _playerStatistics = value;
+            PlayerDataEvents.OnPlayerStatisticsChangedInvoke(_playerStatistics);
+        }
+    }
+
     [SerializeField] private LevellingData _levellingData;
     public LevellingData LevellingData
     {
@@ -23,6 +34,28 @@ public class PlayerData
         {
             _transformData = value;
             PlayerDataEvents.OnTransformDataChangedInvoke(_transformData);
+        }
+    }
+
+    [SerializeField] private EquippedItemsData _equippedItemsData;
+    public EquippedItemsData EquippedItemsData
+    {
+        get => _equippedItemsData;
+        set
+        {
+            _equippedItemsData = value;
+            PlayerDataEvents.OnEquippedItemsDataChangedInvoke(_equippedItemsData);
+        }
+    }
+
+    [SerializeField] private SpecialEffectsData _specialEffectsData;
+    public SpecialEffectsData SpecialEffectsData
+    {
+        get => _specialEffectsData;
+        set
+        {
+            _specialEffectsData = value;
+            PlayerDataEvents.OnSpecialEffectsDataChangedInvoke(_specialEffectsData);
         }
     }
 }
