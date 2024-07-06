@@ -5,4 +5,9 @@ using System.Collections.Generic;
 public class StackableItems
 {
     public List<StackableItemSpace> StackableItemSpaces;
+
+    public StackableItems(List<StackableItemSpace> stackableItemSpaces)
+    {
+        StackableItemSpaces = stackableItemSpaces;
+    }
 }
