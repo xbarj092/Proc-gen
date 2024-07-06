@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: weapon_sword
   Description: Common sword
   Icon: {fileID: 0}
+  Rarity: 1
   Damage: 10
   Range: 1
   AttacksPerSecond: 3

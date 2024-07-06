@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: armor_futuristic
   Description: Armor way ahead of its time
   Icon: {fileID: 0}
+  Rarity: 3
   SpecialArmorEffects:
     _serializedList:
     - Key: 1

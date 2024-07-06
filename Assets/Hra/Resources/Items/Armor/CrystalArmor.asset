@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: armor_crystal
   Description: Attire hardened by crystals
   Icon: {fileID: 0}
+  Rarity: 2
   SpecialArmorEffects:
     _serializedList:
     - Key: 1

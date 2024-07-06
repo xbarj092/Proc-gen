@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: buff_flame_aura
   Description: 
   Icon: {fileID: 0}
+  Rarity: 2
   SpecialBuffEffects:
     _serializedList:
     - Key: 3

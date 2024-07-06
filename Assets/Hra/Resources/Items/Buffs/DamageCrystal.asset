@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: buff_damage_crystal
   Description: 
   Icon: {fileID: 0}
+  Rarity: 2
   SpecialBuffEffects:
     _serializedList:
     - Key: 4

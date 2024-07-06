@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: armor_flame
   Description: Protects player with flames
   Icon: {fileID: 0}
+  Rarity: 2
   SpecialArmorEffects:
     _serializedList:
     - Key: 2

@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: weapon_bow
   Description: 
   Icon: {fileID: 0}
+  Rarity: 2
   Damage: 30
   Range: 7
   AttacksPerSecond: 2

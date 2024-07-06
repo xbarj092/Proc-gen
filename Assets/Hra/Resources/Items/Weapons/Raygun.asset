@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: weapon_raygun
   Description: 
   Icon: {fileID: 0}
+  Rarity: 3
   Damage: 40
   Range: 10
   AttacksPerSecond: 0.5

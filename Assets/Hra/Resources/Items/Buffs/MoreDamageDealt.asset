@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: buff_more_damage
   Description: 
   Icon: {fileID: 0}
+  Rarity: 1
   SpecialBuffEffects:
     _serializedList:
     - Key: 1

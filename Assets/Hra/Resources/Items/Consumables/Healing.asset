@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: consumable_healing
   Description: 
   Icon: {fileID: 0}
+  Rarity: 1
   SpecialConsumableEffects:
     _serializedList: []
   Duration: 0

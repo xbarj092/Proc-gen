@@ -16,6 +16,7 @@ MonoBehaviour:
   FriendlyID: armor_base
   Description: Armor worn by common folk
   Icon: {fileID: 0}
+  Rarity: 1
   SpecialArmorEffects:
     _serializedList:
     - Key: 3
