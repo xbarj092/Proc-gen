@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Armor way ahead of its time
   Icon: {fileID: 0}
   Rarity: 3
+  Price: 15000
   SpecialArmorEffects:
     _serializedList:
     - Key: 1
@@ -27,4 +28,4 @@ MonoBehaviour:
       Value: 0.15
     - Key: 4
       Value: 0.15
-  Defense: 100
+  Defense: 150

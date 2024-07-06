@@ -1,10 +1,13 @@
 using EasyButtons;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MethodTester : MonoBehaviour
 {
     private SpecialEffectHandler _specialEffectHandler = new();
     private InventoryHelper _inventoryHelper = new();
+    private CurrencyHelper _currencyHelper = new();
+    private ShopHelper _shopHelper = new();
 
     private ItemGenerator _itemGenerator = new();
 
@@ -30,6 +33,22 @@ public class MethodTester : MonoBehaviour
     [Button]
     public void GenerateRandomItem()
     {
-        _inventoryHelper.AddItemsToInventory(_itemGenerator.GrantItems(5));
+        _inventoryHelper.AddItemsToInventory(_itemGenerator.GenerateItems(5));
+    }
+
+    [Button]
+    public void AddCurrency()
+    {
+        _currencyHelper.ChangeCurrency(500, true);
+    }
+
+    [Button]
+    public void GetShopItems()
+    {
+        List<ItemInstance> newItems = _shopHelper.GetNewItems();
+        foreach (ItemInstance item in newItems)
+        {
+            Debug.Log(item.FriendlyID + ": " + item.Price);
+        }
     }
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Armor worn by common folk
   Icon: {fileID: 0}
   Rarity: 1
+  Price: 100
   SpecialArmorEffects:
     _serializedList:
     - Key: 3

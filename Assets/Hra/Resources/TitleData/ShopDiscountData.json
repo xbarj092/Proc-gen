@@ -1,0 +1,24 @@
+{
+  "ShopDiscountThresholds": [
+    {
+      "DiscountPercentage": 0.2,
+      "DiscountChance": 0.45
+    },
+    {
+      "DiscountPercentage": 0.4,
+      "DiscountChance": 0.25
+    },
+    {
+      "DiscountPercentage": 0.6,
+      "DiscountChance": 0.2
+    },
+    {
+      "DiscountPercentage": 0.8,
+      "DiscountChance": 0.05
+    },
+    {
+      "DiscountPercentage": 0.9,
+      "DiscountChance": 0.05
+    }
+  ]
+}

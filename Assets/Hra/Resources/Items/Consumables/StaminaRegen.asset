@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: 
   Icon: {fileID: 0}
   Rarity: 2
+  Price: 250
   SpecialConsumableEffects:
     _serializedList: []
   Duration: 60

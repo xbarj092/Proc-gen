@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Protects player with flames
   Icon: {fileID: 0}
   Rarity: 2
+  Price: 500
   SpecialArmorEffects:
     _serializedList:
     - Key: 2

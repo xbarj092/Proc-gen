@@ -4,13 +4,16 @@ using System.Linq;
 
 public class ItemGenerator
 {
+    private ItemInstanceFactory _itemInstanceFactory = new();
+
     public const float DEFAULT_WEIGHT_VALUE = 0.8f;
 
-    public List<ItemBase> GrantItems(int amount)
+    public List<ItemInstance> GenerateItems(int amount)
     {
         List<ItemBase> allItems = LocalDataStorage.Instance.CatalogItems.CatalogItemList;
         Dictionary<ItemBase, float> itemRarities = GetCatalogItemRarities(allItems);
-        return ChooseItemsBasedOnRarity(itemRarities, amount);
+        List<ItemBase> selectedItems = ChooseItemsBasedOnRarity(itemRarities, amount);
+        return GetItemInstances(selectedItems);
     }
 
     private Dictionary<ItemBase, float> GetCatalogItemRarities(List<ItemBase> allItems)
@@ -71,5 +74,10 @@ public class ItemGenerator
         }
 
         return null;
+    }
+
+    private List<ItemInstance> GetItemInstances(List<ItemBase> selectedItems)
+    {
+        return selectedItems.Select(itemBase => _itemInstanceFactory.CreateItemInstance(itemBase)).ToList();
     }
 }

@@ -1,13 +1,22 @@
+using System;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class TitleDataLoader
 {
     public T LoadTitleData<T>(string path)
     {
-        TextAsset itemRaritiesFile = Resources.Load<TextAsset>(path);
-        if (itemRaritiesFile != null)
+        TextAsset dataFile = Resources.Load<TextAsset>(path);
+        if (dataFile != null)
         {
-            return JsonUtility.FromJson<T>(itemRaritiesFile.text);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(dataFile.text);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
         }
         else
         {

@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: 
   Icon: {fileID: 0}
   Rarity: 2
+  Price: 500
   SpecialBuffEffects:
     _serializedList:
     - Key: 3

@@ -3,10 +3,10 @@ using System.Linq;
 
 public class InventoryHelper
 {
-    public void AddItemsToInventory(List<ItemBase> chosenItems)
+    public void AddItemsToInventory(List<ItemInstance> chosenItems)
     {
         InventoryItems inventoryItems = LocalDataStorage.Instance.PlayerData.InventoryItems;
-        foreach (ItemBase item in chosenItems)
+        foreach (ItemInstance item in chosenItems)
         {
             AddItemToInventory(inventoryItems, item);
         }
@@ -14,7 +14,7 @@ public class InventoryHelper
         LocalDataStorage.Instance.PlayerData.InventoryItems = inventoryItems;
     }
 
-    private void AddItemToInventory(InventoryItems inventoryItems, ItemBase item)
+    private void AddItemToInventory(InventoryItems inventoryItems, ItemInstance item)
     {
         if (IsItemStackable(item))
         {
@@ -26,7 +26,7 @@ public class InventoryHelper
         }
     }
 
-    private void AddStackableItemToInventory(InventoryItems inventoryItems, ItemBase item)
+    private void AddStackableItemToInventory(InventoryItems inventoryItems, ItemInstance item)
     {
         if (inventoryItems.StackableItems.StackableItemSpaces.Any(space => space.FriendlyID == item.FriendlyID))
         {
@@ -38,27 +38,27 @@ public class InventoryHelper
         }
     }
 
-    private void AddNonStackableItemToInventory(InventoryItems inventoryItems, ItemBase item)
+    private void AddNonStackableItemToInventory(InventoryItems inventoryItems, ItemInstance item)
     {
         switch (item)
         {
-            case ArmorItem armorItem:
+            case ArmorInstance armorInstance:
                 inventoryItems.NonStackableItems.NonStackableArmorInstances.Add(
-                    new(armorItem.FriendlyID, armorItem.Rarity, armorItem.SpecialArmorEffects, armorItem.Defense));
+                    new(armorInstance.FriendlyID, armorInstance.Rarity, armorInstance.SpecialArmorEffects, armorInstance.Defense));
                 break;
-            case WeaponItem weaponItem:
+            case WeaponInstance weaponinstance:
                 inventoryItems.NonStackableItems.NonStackableWeaponInstances.Add(
-                    new(weaponItem.FriendlyID, weaponItem.Rarity, weaponItem.Damage, weaponItem.Range, weaponItem.AttacksPerSecond, weaponItem.Pierce));
+                    new(weaponinstance.FriendlyID, weaponinstance.Rarity, weaponinstance.Damage, weaponinstance.Range, weaponinstance.AttacksPerSecond, weaponinstance.Pierce));
                 break;
-            case BuffItem buffItem:
+            case BuffInstance buffInstance:
                 inventoryItems.NonStackableItems.NonStackableBuffInstances.Add(
-                    new(buffItem.FriendlyID, buffItem.Rarity, buffItem.SpecialBuffEffects));
+                    new(buffInstance.FriendlyID, buffInstance.Rarity, buffInstance.SpecialBuffEffects));
                 break;
         }
     }
 
-    private bool IsItemStackable(ItemBase item)
+    private bool IsItemStackable(ItemInstance item)
     {
-        return item is ConsumableItem;
+        return item is ConsumableInstance;
     }
 }

@@ -37,4 +37,10 @@ public static class PlayerDataEvents
     {
         OnInventoryItemsChanged?.Invoke(inventoryItems);
     }
+
+    public static event Action<CurrencyData> OnCurrencyDataChanged;
+    public static void OnCurrencyDataChangedInvoke(CurrencyData currencyData)
+    {
+        OnCurrencyDataChanged?.Invoke(currencyData);
+    }
 }

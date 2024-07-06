@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Tool used for poking
   Icon: {fileID: 0}
   Rarity: 1
+  Price: 250
   Damage: 15
   Range: 3
   AttacksPerSecond: 2

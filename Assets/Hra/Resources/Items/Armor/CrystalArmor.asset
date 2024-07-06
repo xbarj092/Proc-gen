@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Attire hardened by crystals
   Icon: {fileID: 0}
   Rarity: 2
+  Price: 750
   SpecialArmorEffects:
     _serializedList:
     - Key: 1

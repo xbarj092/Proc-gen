@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: 
   Icon: {fileID: 0}
   Rarity: 3
+  Price: 9999
   Damage: 40
   Range: 10
   AttacksPerSecond: 0.5

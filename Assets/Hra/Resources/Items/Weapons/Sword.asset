@@ -17,6 +17,7 @@ MonoBehaviour:
   Description: Common sword
   Icon: {fileID: 0}
   Rarity: 1
+  Price: 100
   Damage: 10
   Range: 1
   AttacksPerSecond: 3

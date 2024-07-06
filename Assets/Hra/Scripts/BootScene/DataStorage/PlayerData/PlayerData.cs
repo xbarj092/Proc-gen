@@ -69,4 +69,15 @@ public class PlayerData
             PlayerDataEvents.OnInventoryItemsChangedInvoke(_inventoryItems);
         }
     }
+
+    [SerializeField] private CurrencyData _currencyData;
+    public CurrencyData CurrencyData
+    {
+        get => _currencyData;
+        set
+        {
+            _currencyData = value;
+            PlayerDataEvents.OnCurrencyDataChangedInvoke(_currencyData);
+        }
+    }
 }
