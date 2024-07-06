@@ -1,4 +1,4 @@
-public class ArmorEffectFactory
+public class ArmorEffectFactory : IEffectFactory<SpecialArmorEffect>
 {
     public ISpecialEffect CreateEffect(SpecialArmorEffect effect)
     {

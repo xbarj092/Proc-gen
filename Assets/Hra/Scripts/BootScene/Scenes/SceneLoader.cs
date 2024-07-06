@@ -19,15 +19,15 @@ public static class SceneLoader
     private static Scenes _sceneToUnload;
     private static bool _activateAfterLoad;
 
-    private static DummyLoaderMonoBehaviour _loaderMonoBehaviour;
-    private static DummyLoaderMonoBehaviour LoaderMonoBehaviour
+    private static DummyMonoBehaviour _loaderMonoBehaviour;
+    private static DummyMonoBehaviour LoaderMonoBehaviour
     {
         get
         {
             if (_loaderMonoBehaviour == null)
             {
                 GameObject loaderGameObject = new GameObject("SceneLoader Game Object");
-                _loaderMonoBehaviour = loaderGameObject.AddComponent<DummyLoaderMonoBehaviour>();
+                _loaderMonoBehaviour = loaderGameObject.AddComponent<DummyMonoBehaviour>();
             }
 
             return _loaderMonoBehaviour;

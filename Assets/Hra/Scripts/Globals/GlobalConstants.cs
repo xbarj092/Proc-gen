@@ -23,6 +23,7 @@ public static class GlobalConstants
             public static string DATA_PATH_PLAYER_STATISTICS = Application.persistentDataPath + "/statistics.nigger";
             public static string DATA_PATH_PLAYER_EQUIPPED = Application.persistentDataPath + "/equipped.nigger";
             public static string DATA_PATH_PLAYER_EFFECTS = Application.persistentDataPath + "/effects.nigger";
+            public static string DATA_PATH_PLAYER_INVENTORY = Application.persistentDataPath + "/inventory.nigger";
         }
 
         public class SavedGameData

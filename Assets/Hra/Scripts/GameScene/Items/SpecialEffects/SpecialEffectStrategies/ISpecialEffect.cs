@@ -1,4 +1,4 @@
 public interface ISpecialEffect
 {
-    void ApplyEffect(SpecialEffectGranter granter, float amount);
+    void ApplyEffect(bool enable, float amount);
 }

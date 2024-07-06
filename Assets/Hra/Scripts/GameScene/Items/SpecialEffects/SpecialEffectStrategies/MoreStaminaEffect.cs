@@ -1,11 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public class MoreStaminaEffect : ISpecialEffect
 {
-    public void ApplyEffect(SpecialEffectGranter granter, float amount)
+    public float BuffAmount { get; private set; }
+
+    public void ApplyEffect(bool enable, float amount)
     {
-        granter.IncreaseStamina(amount);
+        ChangeStamina(enable, amount);
+    }
+
+    private void ChangeStamina(bool enable, float percentage)
+    {
+        SpecialEffectsData specialEffectData = LocalDataStorage.Instance.PlayerData.SpecialEffectsData;
+        PlayerStatistics playerStats = LocalDataStorage.Instance.PlayerData.PlayerStatistics;
+
+        if (enable)
+        {
+            BuffAmount = playerStats.MaxStamina * percentage;
+            specialEffectData.BonusStamina += BuffAmount;
+        }
+        else
+        {
+            specialEffectData.BonusStamina -= BuffAmount;
+        }
+
+        LocalDataStorage.Instance.PlayerData.SpecialEffectsData = specialEffectData;
     }
 }

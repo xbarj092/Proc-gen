@@ -1,0 +1,16 @@
+{
+  "RarityData": [
+    {
+      "Type": "Common",
+      "Rarity": 0.8
+    },
+    {
+      "Type": "Rare",
+      "Rarity": 0.15
+    },
+    {
+      "Type": "Legendary",
+      "Rarity": 0.05
+    }
+  ]
+}

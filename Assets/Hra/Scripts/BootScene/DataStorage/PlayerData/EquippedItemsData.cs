@@ -1,8 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class EquippedItemsData : MonoBehaviour
+[Serializable]
+public class EquippedItemsData
 {
     public string EquippedWeapon;
     public List<string> EquippedArmor;

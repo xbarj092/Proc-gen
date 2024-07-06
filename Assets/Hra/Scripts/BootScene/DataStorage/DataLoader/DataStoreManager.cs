@@ -28,6 +28,7 @@ public class DataStoreManager : MonoSingleton<DataStoreManager>
         _dataSaver.SaveData(playerData.PlayerStatistics, GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_STATISTICS);
         _dataSaver.SaveData(playerData.EquippedItemsData, GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_EQUIPPED);
         _dataSaver.SaveData(playerData.SpecialEffectsData, GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_EFFECTS);
+        _dataSaver.SaveData(playerData.InventoryItems, GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_INVENTORY);
     }
 
     private void LoadPlayerData()
@@ -39,6 +40,7 @@ public class DataStoreManager : MonoSingleton<DataStoreManager>
         playerData.PlayerStatistics = _dataLoader.LoadData<PlayerStatistics>(GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_STATISTICS);
         playerData.EquippedItemsData = _dataLoader.LoadData<EquippedItemsData>(GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_EQUIPPED);
         playerData.SpecialEffectsData = _dataLoader.LoadData<SpecialEffectsData>(GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_EFFECTS);
+        playerData.InventoryItems = _dataLoader.LoadData<InventoryItems>(GlobalConstants.SavedDataPaths.SavedPlayerData.DATA_PATH_PLAYER_INVENTORY);
     }
 
     private void SaveGameData()

@@ -1,4 +1,4 @@
-public class ConsumableEffectFactory
+public class ConsumableEffectFactory : IEffectFactory<SpecialConsumableEffect>
 {
     public ISpecialEffect CreateEffect(SpecialConsumableEffect effect)
     {

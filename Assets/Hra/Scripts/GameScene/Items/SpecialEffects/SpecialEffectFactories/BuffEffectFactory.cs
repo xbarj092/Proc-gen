@@ -1,4 +1,4 @@
-public class BuffEffectFactory
+public class BuffEffectFactory : IEffectFactory<SpecialBuffEffect>
 {
     public ISpecialEffect CreateEffect(SpecialBuffEffect effect)
     {

@@ -1,7 +1,30 @@
+using System;
+
 public class DamageCrystalEffect : ISpecialEffect
 {
-    public void ApplyEffect(SpecialEffectGranter granter, float amount)
+    public float BuffAmount { get; private set; }
+
+    public void ApplyEffect(bool enable, float amount)
     {
-        granter.SetDamageCrystal(true, amount);
+        SetDamageCrystal(enable, amount);
+    }
+
+    private void SetDamageCrystal(bool enable, float damageAmount)
+    {
+        SpecialEffectsData specialEffectData = LocalDataStorage.Instance.PlayerData.SpecialEffectsData;
+        BuffAmount = damageAmount;
+        if (enable)
+        {
+            specialEffectData.CrystalDamage += damageAmount;
+            specialEffectData.DamageCrystalAmount++;
+        }
+        else
+        {
+            specialEffectData.CrystalDamage -= damageAmount;
+            specialEffectData.DamageCrystalAmount--;
+        }
+
+        specialEffectData.DamageCrystalEnabled = specialEffectData.DamageCrystalAmount > 0;
+        LocalDataStorage.Instance.PlayerData.SpecialEffectsData = specialEffectData;
     }
 }

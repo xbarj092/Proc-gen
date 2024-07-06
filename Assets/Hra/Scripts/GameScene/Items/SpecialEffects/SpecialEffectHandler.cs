@@ -1,54 +1,72 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SpecialEffectHandler
 {
-    private SpecialEffectGranter _specialEffectGranter { get; }
+    private static DummyMonoBehaviour _coroutineStarterMonoBehaviour;
+    private static DummyMonoBehaviour CoroutineStarterMonoBehaviour
+    {
+        get
+        {
+            if (_coroutineStarterMonoBehaviour == null)
+            {
+                GameObject loaderGameObject = new("Coroutine Starter Game Object");
+                _coroutineStarterMonoBehaviour = loaderGameObject.AddComponent<DummyMonoBehaviour>();
+            }
+
+            return _coroutineStarterMonoBehaviour;
+        }
+    }
+
     private BuffEffectFactory _buffEffectFactory = new();
     private ArmorEffectFactory _armorEffectFactory = new();
     private ConsumableEffectFactory _consumableEffectFactory = new();
 
-    public void ApplyArmorEffects(ArmorItem armorItem)
-    {
-        SpecialEffectContext context = new();
+    private List<ISpecialEffect> _specialEffectsActive = new();
 
-        foreach (KeyValuePair<SpecialArmorEffect, float> effect in armorItem.SpecialArmorEffects)
+    public void ApplyArmorEffects(ArmorItem armorItem, bool enable)
+    {
+        ApplyEffects(armorItem.SpecialArmorEffects, _armorEffectFactory, enable);
+    }
+
+    public void ApplyBuffEffects(BuffItem buffItem, bool enable)
+    {
+        ApplyEffects(buffItem.SpecialBuffEffects, _buffEffectFactory, enable);
+    }
+
+    public void ApplyConsumableEffects(ConsumableItem consumableItem, bool enable)
+    {
+        ApplyEffects(consumableItem.SpecialConsumableEffects, _consumableEffectFactory, enable, consumableItem.Duration);
+    }
+
+    private void ApplyEffects<T>(Dictionary<T, float> effects, IEffectFactory<T> factory, bool enable, float duration = default)
+    {
+        foreach (KeyValuePair<T, float> effect in effects)
         {
-            ISpecialEffect armorEffect = _armorEffectFactory.CreateEffect(effect.Key);
-            if (armorEffect != null)
+            ISpecialEffect specialEffect = factory.CreateEffect(effect.Key);
+            if (specialEffect != null)
             {
-                context.SetEffect(armorEffect);
-                context.ApplyEffect(_specialEffectGranter, effect.Value);
+                specialEffect.ApplyEffect(enable, effect.Value);
+                _specialEffectsActive.Add(specialEffect);
+                if (enable && duration != default)
+                {
+                    CoroutineStarterMonoBehaviour.StartCoroutine(StartCountdown(specialEffect, duration));
+                }
             }
         }
     }
 
-    public void ApplyBuffEffects(BuffItem buffItem)
+    private IEnumerator StartCountdown(ISpecialEffect specialEffect, float duration)
     {
-        SpecialEffectContext context = new();
-
-        foreach (KeyValuePair<SpecialBuffEffect, float> effect in buffItem.SpecialBuffEffects)
+        float durationLeft = duration;
+        while (durationLeft > 0)
         {
-            ISpecialEffect buffEffect = _buffEffectFactory.CreateEffect(effect.Key);
-            if (buffEffect != null)
-            {
-                context.SetEffect(buffEffect);
-                context.ApplyEffect(_specialEffectGranter, effect.Value);
-            }
+            yield return new WaitForSeconds(1);
+            durationLeft--;
         }
-    }
 
-    public void ApplyConsumableEffects(ConsumableItem consumableItem)
-    {
-        SpecialEffectContext context = new();
-
-        foreach (KeyValuePair<SpecialConsumableEffect, float> effect in consumableItem.SpecialConsumableEffects)
-        {
-            ISpecialEffect consumableEffect = _consumableEffectFactory.CreateEffect(effect.Key);
-            if (consumableEffect != null)
-            {
-                context.SetEffect(consumableEffect);
-                context.ApplyEffect(_specialEffectGranter, effect.Value);
-            }
-        }
+        specialEffect.ApplyEffect(false, 0);
+        _specialEffectsActive.Remove(specialEffect);
     }
 }

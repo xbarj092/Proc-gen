@@ -14,4 +14,7 @@ public class GameData
             GameDataEvents.OnMapTransformDataChangedInvoke(_mapTransformData);
         }
     }
+
+    [SerializeField] private LevellingMultipliers _levellingMultipliers;
+    public LevellingMultipliers LevellingMultipliers => _levellingMultipliers;
 }

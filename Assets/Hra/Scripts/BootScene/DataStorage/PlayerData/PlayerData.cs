@@ -58,4 +58,15 @@ public class PlayerData
             PlayerDataEvents.OnSpecialEffectsDataChangedInvoke(_specialEffectsData);
         }
     }
+
+    [SerializeField] private InventoryItems _inventoryItems;
+    public InventoryItems InventoryItems
+    {
+        get => _inventoryItems;
+        set
+        {
+            _inventoryItems = value;
+            PlayerDataEvents.OnInventoryItemsChangedInvoke(_inventoryItems);
+        }
+    }
 }

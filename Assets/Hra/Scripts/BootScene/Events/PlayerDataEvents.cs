@@ -31,4 +31,10 @@ public static class PlayerDataEvents
     {
         OnSpecialEffectsDataChanged?.Invoke(specialEffectsData);
     }
+
+    public static event Action<InventoryItems> OnInventoryItemsChanged;
+    public static void OnInventoryItemsChangedInvoke(InventoryItems inventoryItems)
+    {
+        OnInventoryItemsChanged?.Invoke(inventoryItems);
+    }
 }
