@@ -8,8 +8,8 @@ public class NonStackableWeaponInstance : NonStackableItemInstance
     public float AttacksPerSecond;
     public bool Pierce;
 
-    public NonStackableWeaponInstance(string friendlyID, RarityType rarity, int damage, int range, float attacksPerSecond, bool pierce) :
-        base(friendlyID, rarity)
+    public NonStackableWeaponInstance(string friendlyID, RarityType rarity, int instanceID, int damage, int range, float attacksPerSecond, bool pierce) :
+        base(friendlyID, rarity, instanceID)
     {
         Damage = damage;
         Range = range;

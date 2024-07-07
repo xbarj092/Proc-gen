@@ -9,5 +9,7 @@ public class ArmorInstance : ItemInstance
     {
         SpecialArmorEffects = item.SpecialArmorEffects;
         Defense = item.Defense;
+
+        InstanceID = GenerateInstanceID(LocalDataStorage.Instance.PlayerData.InventoryItems.NonStackableItems.NonStackableArmorInstances);
     }
 }

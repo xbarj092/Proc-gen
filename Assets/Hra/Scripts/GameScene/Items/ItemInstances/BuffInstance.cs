@@ -7,5 +7,7 @@ public class BuffInstance : ItemInstance
     public BuffInstance(BuffItem item) : base(item)
     {
         SpecialBuffEffects = item.SpecialBuffEffects;
+
+        InstanceID = GenerateInstanceID(LocalDataStorage.Instance.PlayerData.InventoryItems.NonStackableItems.NonStackableBuffInstances);
     }
 }

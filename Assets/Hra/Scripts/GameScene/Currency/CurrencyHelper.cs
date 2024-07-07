@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class CurrencyHelper
 {
     public void ChangeCurrency(float amount, bool add)
@@ -24,5 +26,17 @@ public class CurrencyHelper
         CurrencyData currencyData = LocalDataStorage.Instance.PlayerData.CurrencyData;
         currencyData.CurrencyAmount -= amount;
         LocalDataStorage.Instance.PlayerData.CurrencyData = currencyData;
+    }
+
+    public void AddCurrencyFromItems(List<ItemInstance> items)
+    {
+        float totalAmountObtained = default;
+        foreach (ItemInstance item in items)
+        {
+            float itemPrice = item.Price / 10;
+            totalAmountObtained += itemPrice;
+        }
+
+        AddCurrency(totalAmountObtained);
     }
 }

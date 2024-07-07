@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemInstance
@@ -12,6 +14,8 @@ public class ItemInstance
 
     public float Price;
 
+    public int InstanceID;
+
     public ItemInstance(ItemBase item)
     {
         Name = item.Name;
@@ -23,5 +27,18 @@ public class ItemInstance
         Rarity = item.Rarity;
 
         Price = item.Price;
+    }
+
+    protected int GenerateInstanceID<T>(List<T> instances) where T : NonStackableItemInstance
+    {
+        System.Random random = new(); 
+        int instanceID = default;
+
+        do
+        {
+            instanceID = random.Next(0, 1000000);
+        }
+        while (instances.Any(instance => instance.InstanceID == instanceID));
+        return instanceID;
     }
 }

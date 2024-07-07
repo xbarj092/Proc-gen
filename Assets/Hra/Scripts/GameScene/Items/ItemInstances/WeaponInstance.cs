@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 public class WeaponInstance : ItemInstance
 {
     public int Damage;
@@ -11,5 +14,7 @@ public class WeaponInstance : ItemInstance
         Range = item.Range;
         AttacksPerSecond = item.AttacksPerSecond;
         Pierce = item.Pierce;
+
+        InstanceID = GenerateInstanceID(LocalDataStorage.Instance.PlayerData.InventoryItems.NonStackableItems.NonStackableWeaponInstances);
     }
 }
