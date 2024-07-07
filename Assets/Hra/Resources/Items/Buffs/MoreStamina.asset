@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb10041b9fca964589fc0e447c7af5b, type: 3}
   m_Name: MoreStamina
   m_EditorClassIdentifier: 
-  Name: 
+  Name: More stamina
   FriendlyID: buff_more_stamina
   Description: 
   Icon: {fileID: 0}

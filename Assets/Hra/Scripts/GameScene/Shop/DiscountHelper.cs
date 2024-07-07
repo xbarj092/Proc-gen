@@ -17,7 +17,7 @@ public class DiscountHelper
             if (randomDouble <= SHOP_DISCOUNT_CHANCE)
             {
                 float discount = GetDiscountPercentage();
-                item.Price -= discount * item.Price;
+                item.DiscountedPrice = UnityEngine.Mathf.CeilToInt(discount * item.Price);
                 discountedItems.Add(item);
             }
         }
@@ -45,7 +45,9 @@ public class DiscountHelper
 
     public List<ItemInstance> UpdateWithDiscountedItems(List<ItemInstance> originalItems, List<ItemInstance> discountedItems)
     {
-        Dictionary<string, ItemInstance> discountedItemsDict = discountedItems.ToDictionary(item => item.FriendlyID);
+        Dictionary<string, ItemInstance> discountedItemsDict = discountedItems.GroupBy(item => item.FriendlyID)
+            .ToDictionary(group => group.Key, group => group.First());
+
         for (int i = 0; i < originalItems.Count; i++)
         {
             if (discountedItemsDict.TryGetValue(originalItems[i].FriendlyID, out ItemInstance discountedItem))

@@ -12,6 +12,7 @@ public static class GlobalConstants
     {
         public const string TAG_ROOM = "Room";
         public const string TAG_HALLWAY = "Hallway";
+        public const string TAG_SHOP = "Shop";
     }
 
     public class SavedDataPaths

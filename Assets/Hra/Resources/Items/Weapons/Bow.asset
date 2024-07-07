@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba229d71fc17d204cabb72299c6c3ecc, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Bow
   FriendlyID: weapon_bow
   Description: 
   Icon: {fileID: 0}

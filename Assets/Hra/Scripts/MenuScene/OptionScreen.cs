@@ -1,9 +1,7 @@
-using UnityEngine;
-
-public class OptionScreen : MonoBehaviour
+public class OptionScreen : GameScreen
 {
-    public void Close()
+    public new void Close()
     {
-        Destroy(gameObject);
+        base.Close();
     }
 }

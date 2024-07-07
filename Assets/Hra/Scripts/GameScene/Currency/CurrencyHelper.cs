@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CurrencyHelper
 {
@@ -33,7 +34,7 @@ public class CurrencyHelper
         float totalAmountObtained = default;
         foreach (ItemInstance item in items)
         {
-            float itemPrice = item.Price / 10;
+            float itemPrice = Mathf.CeilToInt(item.Price / 10);
             totalAmountObtained += itemPrice;
         }
 

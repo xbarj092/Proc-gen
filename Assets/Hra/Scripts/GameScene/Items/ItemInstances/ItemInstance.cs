@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class ItemInstance
 {
     public string Name;
@@ -12,7 +14,8 @@ public class ItemInstance
 
     public RarityType Rarity;
 
-    public float Price;
+    public int Price;
+    public int DiscountedPrice;
 
     public int InstanceID;
 
@@ -26,7 +29,7 @@ public class ItemInstance
 
         Rarity = item.Rarity;
 
-        Price = item.Price;
+        Price = Mathf.CeilToInt(item.Price);
     }
 
     protected int GenerateInstanceID<T>(List<T> instances) where T : NonStackableItemInstance

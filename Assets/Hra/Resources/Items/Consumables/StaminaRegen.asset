@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09886bf6095712c43b47d0a96693cbfe, type: 3}
   m_Name: StaminaRegen
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Stamina regen potion
   FriendlyID: consumable_stamina_regen
   Description: 
   Icon: {fileID: 0}
